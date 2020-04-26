@@ -1,5 +1,5 @@
 from utils import init_logger, load_config, preview_images, load_model
-from camera import WebCamera
+from camera import capture_training_data, predict_live
 from dataloader import get_dataloader
 from models import RockPaperScissorsClassifier
 from optimize import train_model, test_model
@@ -12,10 +12,8 @@ if __name__ == '__main__':
     init_logger()
     config = load_config("config.yaml")
 
-    cam = WebCamera(None)
-
     # Remove comment to collect training data
-    # cam.capture_training_data()
+    # capture_training_data()
 
     transformer = transforms.Compose([
         transforms.Resize(size=28),
@@ -44,5 +42,6 @@ if __name__ == '__main__':
     # Load model from file
     model = load_model("./model.pth")
     idx_to_class = {idx: name for name, idx in class_to_idx.items()}
-    cam.predict_live(model, transformer, idx_to_class)
 
+    # Make live predictions from camera
+    predict_live(model, transformer, idx_to_class)
