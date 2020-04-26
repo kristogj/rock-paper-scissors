@@ -12,7 +12,7 @@ class RockPaperScissorsClassifier(nn.Module):
         for param in self.model.parameters():
             param.requires_grad = False
 
-        # Change last layer to fit our classsification task
+        # Change last layer to fit our classification task
         num_ftrs = self.model.fc.in_features
         self.model.fc = nn.Linear(num_ftrs, 4)
 

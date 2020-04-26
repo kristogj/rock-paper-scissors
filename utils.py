@@ -60,7 +60,7 @@ def preview_images(dataloader, class_names):
     # Make a grid from batch
     out = tv.utils.make_grid(inputs)
 
-    imshow(out, title=[class_names[x] for x in classes])
+    imshow(out, title="Examples")
 
 
 def get_device():

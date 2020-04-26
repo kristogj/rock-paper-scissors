@@ -16,17 +16,18 @@ if __name__ == '__main__':
     # capture_training_data()
 
     transformer = transforms.Compose([
-        transforms.Resize(size=28),
+        transforms.Resize(size=128),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225])])
     # Load dataset
     train_loader, class_to_idx = get_dataloader("./data/train", batch_size=config["batch_size"], shuffle=True,
                                                 transform=transformer)
+    val_loader, _ = get_dataloader("./data/val", batch_size=1, shuffle=False, transform=transformer)
     test_loader, _ = get_dataloader("./data/test", batch_size=1, shuffle=False, transform=transformer)
 
     # Preview images
-    # preview_images(dataloader_train, list(class_to_idx.keys()))
+    #preview_images(train_loader, list(class_to_idx.keys()))
 
     # Initialize model
     rps = RockPaperScissorsClassifier()
@@ -34,10 +35,10 @@ if __name__ == '__main__':
     optimizer = optim.Adam(rps.model.fc.parameters())
 
     # Train model
-    # train_model(rps, criterion, optimizer, train_loader, epochs=25)
+    #train_model(rps, criterion, optimizer, train_loader, val_loader, epochs=10)
 
     # Test model
-    # test_model(rps, test_loader)
+    #test_model(test_loader)
 
     # Load model from file
     model = load_model("./model.pth")
