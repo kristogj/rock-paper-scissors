@@ -1,7 +1,7 @@
 # Rock, paper, scissors with Convolutional Neural Networks ✂️
 
 As a fun project I wanted to see if I could successfully build a dataset of rock, paper, scissors hand movements 
-directly from my webcamera, and train a model that could make real time predictions. 
+directly from my webcamera, and train a model that could make real-time predictions. 
 
 ## Build dataset
 Running *capture_training_data()* from *camera.py* will open up a view that captures images directly from the webcam. 
