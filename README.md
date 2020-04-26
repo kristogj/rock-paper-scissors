@@ -26,6 +26,5 @@ after training.
 
 ## Real-time predictions
 To do the real-time predictions I made a new camera view, *predict_live(_)*, that makes predictions on every frame of 
-the video being captured. With a minimal effort on building the dataset, I manage to get pretty good results with 
-this model. 
+the video being captured. With a minimal effort on building the dataset, I managed to get pretty good results.
 ![collecting](images/prediction.png) <br>
