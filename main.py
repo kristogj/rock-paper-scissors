@@ -2,6 +2,7 @@ from utils import init_logger, load_config, preview_images
 from camera import WebCamera
 from dataloader import get_dataloader
 from models import RockPaperScissorsClassifier
+from optimize import train_model
 
 import torch.nn as nn
 from torchvision import transforms
@@ -29,6 +30,10 @@ if __name__ == '__main__':
     # Preview images
     # preview_images(dataloader_train, list(class_to_idx.keys()))
 
+    # Initialize model
     rps = RockPaperScissorsClassifier()
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(rps.model.fc.parameters())
+
+    # Train model
+    train_model(rps, criterion, optimizer, dataloader_train, epochs=10)

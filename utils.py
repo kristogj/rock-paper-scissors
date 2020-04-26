@@ -3,6 +3,7 @@ import yaml
 import numpy as np
 import matplotlib.pyplot as plt
 import torchvision as tv
+import torch
 
 
 def init_logger():
@@ -46,3 +47,10 @@ def preview_images(dataloader, class_names):
     out = tv.utils.make_grid(inputs)
 
     imshow(out, title=[class_names[x] for x in classes])
+
+
+def get_device():
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    else:
+        return torch.device("cpu")
