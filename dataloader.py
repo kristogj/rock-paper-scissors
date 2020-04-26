@@ -13,4 +13,4 @@ def get_dataloader(root, batch_size, shuffle=True, transform=None):
     """
     data = tv.datasets.ImageFolder(root, transform=transform)
     return torch.utils.data.DataLoader(data, batch_size=batch_size, shuffle=shuffle, drop_last=False,
-                                       num_workers=4)
+                                       num_workers=4), data.class_to_idx
