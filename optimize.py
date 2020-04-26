@@ -44,6 +44,9 @@ def train_model(model, criterion, optimizer, dataloader, epochs=25):
         # Append losses
         train_losses.append(train_loss)
 
+    # Save model to file
+    torch.save(model.state_dict(), "./model.pth")
+
     logging.info("Generating plot to loss.png")
     generate_lineplot(train_losses)
 

@@ -1,6 +1,12 @@
 import cv2
 import logging
 import os
+from PIL import Image
+import torch
+import torch.nn.functional as F
+
+# Rectangle position
+x1, y1, x2, y2 = 800, 100, 1200, 500
 
 
 class WebCamera:
@@ -15,9 +21,6 @@ class WebCamera:
         Collect images that are going to be used as the training data for the model
         :return: None
         """
-        # Rectangle position
-        x1, y1, x2, y2 = 800, 100, 1200, 500
-
         _class = "None"
         cam = cv2.VideoCapture(0)
         cv2.namedWindow("Capture training data")
@@ -71,6 +74,52 @@ class WebCamera:
                 cv2.imwrite(img_name, frame[y1:y2, x1:x2])
                 logging.info("Saved {}".format(img_name))
                 img_counter += 1
+
+        cam.release()
+        cv2.destroyAllWindows()
+
+    @staticmethod
+    def predict_live(model, transformer, idx_to_class):
+        """
+        Predict rock, paper, scissors or none inside rectangle
+        :param model: RockPaperScissorsClassifier
+        :param transformer: torchvision.transforms.Compose
+        :param idx_to_class: dict - index to class name
+        :return:
+        """
+        _class = "None"
+        cam = cv2.VideoCapture(0)
+        cv2.namedWindow("Predict Live")
+        logging.info("Predicting Live on WebCamera")
+        while True:
+            # Read frame from camera and show image in viewer
+            ret, frame = cam.read()
+            frame = cv2.flip(frame, 1)
+
+            # Square area to capture images from
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 2)
+
+            # Make prediction if what is showing inside the rectangle
+            img = frame[y1:y2, x1:x2]
+            img = transformer(Image.fromarray(img))
+            img = img[None, :, :, :]
+            pred = F.softmax(model(img), dim=1)
+            pred = torch.argmax(pred, 1).item()
+            _class = idx_to_class[pred]
+
+            # Update how many images has been captured
+            cv2.putText(frame, "Prediction: {}".format(_class), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0))
+
+            cv2.imshow("Predict Live", frame)
+
+            if not ret:
+                break
+            k = cv2.waitKey(1)
+
+            if k % 256 == 27:
+                # ESC pressed - close window
+                logging.info("Escaped pressed, closing down camera...")
+                break
 
         cam.release()
         cv2.destroyAllWindows()

@@ -1,4 +1,4 @@
-from utils import init_logger, load_config, preview_images
+from utils import init_logger, load_config, preview_images, load_model
 from camera import WebCamera
 from dataloader import get_dataloader
 from models import RockPaperScissorsClassifier
@@ -36,7 +36,13 @@ if __name__ == '__main__':
     optimizer = optim.Adam(rps.model.fc.parameters())
 
     # Train model
-    train_model(rps, criterion, optimizer, train_loader, epochs=25)
+    # train_model(rps, criterion, optimizer, train_loader, epochs=25)
 
     # Test model
-    test_model(rps, test_loader)
+    # test_model(rps, test_loader)
+
+    # Load model from file
+    model = load_model("./model.pth")
+    idx_to_class = {idx: name for name, idx in class_to_idx.items()}
+    cam.predict_live(model, transformer, idx_to_class)
+

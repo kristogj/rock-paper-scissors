@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torchvision as tv
 import torch
+from models import RockPaperScissorsClassifier
 
 
 def init_logger():
@@ -24,6 +25,19 @@ def load_config(path):
     Load the configuration from task_2_table.yaml.
     """
     return yaml.load(open(path, 'r'), Loader=yaml.SafeLoader)
+
+
+def load_model(path):
+    """
+    Load model from file
+    :param path: str
+    :return: RockPaperScissorsClassifier
+    """
+    logging.info("Loading model from {}".format(path))
+    model = RockPaperScissorsClassifier()
+    model.load_state_dict(torch.load(path))
+    model.eval()
+    return model
 
 
 def imshow(inp, title=None):
